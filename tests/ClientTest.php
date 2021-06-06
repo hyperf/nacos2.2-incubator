@@ -34,6 +34,6 @@ class ClientTest extends TestCase
 
         $data = $client->pull();
 
-        $this->assertSame(['nacos_config' => ['id' => 1], 'nacos_config.data' => 'Hello World'], $data);
+        $this->assertSame(['nacos_config' => ['id' => 1], 'nacos_config.data' => 'Hello World', ['ids' => [1,2,3]]], $data);
     }
 }
