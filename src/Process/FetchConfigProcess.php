@@ -9,11 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Hyperf\Nacos\Config;
+namespace Hyperf\Nacos\Process;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Nacos\Client;
+use Hyperf\Nacos\Config\PipeMessage;
 use Hyperf\Process\AbstractProcess;
 use Hyperf\Process\ProcessCollector;
 use Hyperf\Process\ProcessManager;

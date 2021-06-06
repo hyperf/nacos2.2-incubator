@@ -12,11 +12,11 @@ declare(strict_types=1);
 namespace Hyperf\Nacos;
 
 use Hyperf\Framework\Logger\StdoutLogger;
-use Hyperf\Nacos\Config\FetchConfigProcess;
 use Hyperf\Nacos\Contract\LoggerInterface;
 use Hyperf\Nacos\Listener\ConfigReloadListener;
 use Hyperf\Nacos\Listener\MainWorkerStartListener;
 use Hyperf\Nacos\Listener\OnShutdownListener;
+use Hyperf\Nacos\Process\FetchConfigProcess;
 use Hyperf\Nacos\Process\InstanceBeatProcess;
 use Hyperf\NacosSdk\Application;
 
