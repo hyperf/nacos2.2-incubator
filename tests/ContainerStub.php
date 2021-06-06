@@ -47,7 +47,7 @@ class ContainerStub
                     'enable' => true,
                     'merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
                     'reload_interval' => 3,
-                    'append_node' => 'nacos_config',
+                    'default_key' => 'nacos_default_config',
                     'listener_config' => [
                         'nacos_config' => [
                             'tenant' => 'tenant',
@@ -58,6 +58,11 @@ class ContainerStub
                         'nacos_config.data' => [
                             'data_id' => 'text',
                             'group' => 'DEFAULT_GROUP',
+                        ],
+                        [
+                            'data_id' => 'json2',
+                            'group' => 'DEFAULT_GROUP',
+                            'type' => 'json',
                         ],
                     ],
                 ],

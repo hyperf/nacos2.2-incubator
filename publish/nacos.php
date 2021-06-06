@@ -28,7 +28,7 @@ return [
         'enable' => true,
         'merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
         'reload_interval' => 3,
-        'append_node' => 'nacos_config',
+        'default_key' => 'nacos_config',
         'listener_config' => [
             // dataId, group, tenant, type, content
             'nacos_config' => [

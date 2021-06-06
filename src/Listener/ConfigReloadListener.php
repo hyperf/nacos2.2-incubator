@@ -9,17 +9,18 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Hyperf\Nacos\Config;
+namespace Hyperf\Nacos\Listener;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\OnPipeMessage;
+use Hyperf\Nacos\Config\PipeMessage;
 use Hyperf\Nacos\Constants;
 use Hyperf\Process\Event\PipeMessage as UserProcessPipMessage;
 use Hyperf\Utils\Arr;
 use Psr\Container\ContainerInterface;
 
-class OnPipeMessageListener implements ListenerInterface
+class ConfigReloadListener implements ListenerInterface
 {
     /**
      * @var ConfigInterface
@@ -42,20 +43,19 @@ class OnPipeMessageListener implements ListenerInterface
         ];
     }
 
-    /**
-     * Handle the Event when the event is triggered, all listeners will
-     * complete before the event is returned to the EventDispatcher.
-     */
     public function process(object $event)
     {
         if (property_exists($event, 'data') && $event->data instanceof PipeMessage) {
-            $root = $this->config->get('nacos.config_append_node');
+            $root = $this->config->get('nacos.config.default_key');
             foreach ($event->data->configurations ?? [] as $key => $conf) {
-                $configKey = $root ? $root . '.' . $key : $key;
-                if (is_array($conf) && $this->config->get('nacos.config_merge_mode') == Constants::CONFIG_MERGE_APPEND) {
-                    $conf = Arr::merge($this->config->get($configKey, []), $conf);
+                if (is_int($key)) {
+                    $key = $root;
                 }
-                $this->config->set($configKey, $conf);
+                if (is_array($conf) && $this->config->get('nacos.config.merge_mode') === Constants::CONFIG_MERGE_APPEND) {
+                    $conf = Arr::merge($this->config->get($key, []), $conf);
+                }
+
+                $this->config->set($key, $conf);
             }
         }
     }

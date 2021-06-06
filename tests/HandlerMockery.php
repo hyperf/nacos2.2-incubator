@@ -48,6 +48,9 @@ class HandlerMockery
                     case 'json':
                         $data = '{"id": 1}';
                         break;
+                    case 'json2':
+                        $data = '{"ids": [1,2,3]}';
+                        break;
                     case 'text':
                         $data = 'Hello World';
                         break;

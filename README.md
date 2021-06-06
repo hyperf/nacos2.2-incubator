@@ -79,29 +79,43 @@ $optimal = $instance->getOptimal($service);
 `FetchConfigProcess.php` 自定义进程将监听配置, 若有更新将发送 `PipeMessage` 到各服务`worker` 进程, 并合入当前进程的 `Config`
 
 如果服务如下配置
+
 ```php
 // config/autoload/nacos.php
 
 return [
-    // ...other
-    'config_reload_interval' => 3,
-    // 远程配置合并节点, 默认 config 根节点
-    'config_append_node' => 'nacos_config',
-    'listener_config' => [
-        // 配置项 dataId, group, tenant, type, content
-        [
-            'data_id' => 'hyperf-service-config',
-            'group' => 'DEFAULT_GROUP',
-        ],
-        [
-            'data_id' => 'hyperf-service-config-yml',
-            'group' => 'DEFAULT_GROUP',
-            'type' => 'yml',
+    'host' => '127.0.0.1',
+    'port' => 8848,
+    'username' => null,
+    'password' => null,
+    'config' => [
+        // 是否开启配置中心
+        'enable' => true,
+        // 合并模式
+        'merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
+        // 配置读取间隔
+        'reload_interval' => 3,
+        // 默认的配置 KEY 值
+        'default_key' => 'nacos_config',
+        'listener_config' => [
+            // $key => $config
+            // 不设置 key 时，则使用 default_key 配置的 key
+            'nacos_config' => [
+                'tenant' => 'tenant',
+                'data_id' => 'json',
+                'group' => 'DEFAULT_GROUP',
+                'type' => 'json',
+            ],
+            'nacos_config.data' => [
+                'data_id' => 'text',
+                'group' => 'DEFAULT_GROUP',
+            ],
         ],
     ],
 ];
 ```
 
-系统将自动监听`listener_config` 中的配置，并将其合并入`hyperf Config` 对象的指定(`config_append_node`) 节点，可以用`config('nacos_config.***')` 获取，若没有配置 `config_append_node` 项，将会并入 `Config` 对象根节点。
+系统将自动监听`listener_config` 中的配置，并将其合并入`hyperf Config` 对象的指定(`config_append_node`) 节点，可以用`config('nacos_config.***')`
+获取，若没有配置 `config_append_node` 项，将会并入 `Config` 对象根节点。
 
 > 所有配置的 `键(key)` 在实际发起 API 请求时会自动从下划线风格转换为驼峰风格。

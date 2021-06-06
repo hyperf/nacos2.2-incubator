@@ -13,8 +13,8 @@ namespace Hyperf\Nacos;
 
 use Hyperf\Framework\Logger\StdoutLogger;
 use Hyperf\Nacos\Config\FetchConfigProcess;
-use Hyperf\Nacos\Config\OnPipeMessageListener;
 use Hyperf\Nacos\Contract\LoggerInterface;
+use Hyperf\Nacos\Listener\ConfigReloadListener;
 use Hyperf\Nacos\Listener\MainWorkerStartListener;
 use Hyperf\Nacos\Listener\OnShutdownListener;
 use Hyperf\Nacos\Process\InstanceBeatProcess;
@@ -28,7 +28,7 @@ class ConfigProvider
             'listeners' => [
                 MainWorkerStartListener::class,
                 OnShutdownListener::class,
-                OnPipeMessageListener::class,
+                ConfigReloadListener::class,
             ],
             'processes' => [
                 InstanceBeatProcess::class,
