@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace Hyperf\Nacos\Listener;
 
 use Hyperf\Contract\ConfigInterface;
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\OnShutdown;
 use Hyperf\Nacos\Api\NacosInstance;
-use Hyperf\Nacos\Contract\LoggerInterface;
 use Hyperf\Nacos\Instance;
 use Hyperf\Server\Event\CoroutineServerStop;
 use Psr\Container\ContainerInterface;
@@ -28,6 +28,11 @@ class OnShutdownListener implements ListenerInterface
     protected $container;
 
     /**
+     * @var StdoutLoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @var bool
      */
     private $processed = false;
@@ -35,6 +40,7 @@ class OnShutdownListener implements ListenerInterface
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->logger = $container->get(StdoutLoggerInterface::class);
     }
 
     public function listen(): array
@@ -60,15 +66,13 @@ class OnShutdownListener implements ListenerInterface
             return;
         }
 
-        $logger = $this->container->get(LoggerInterface::class);
-
         $instance = $this->container->get(Instance::class);
         /** @var NacosInstance $nacosInstance */
         $nacosInstance = make(NacosInstance::class);
         if ($nacosInstance->delete($instance)) {
-            $logger && $logger->info('nacos instance delete success.');
+            $this->logger->info('nacos instance delete success.');
         } else {
-            $logger && $logger->erro('nacos instance delete fail when shutdown.');
+            $this->logger->erro('nacos instance delete fail when shutdown.');
         }
     }
 }

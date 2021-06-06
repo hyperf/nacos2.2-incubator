@@ -11,8 +11,6 @@ declare(strict_types=1);
  */
 namespace Hyperf\Nacos;
 
-use Hyperf\Framework\Logger\StdoutLogger;
-use Hyperf\Nacos\Contract\LoggerInterface;
 use Hyperf\Nacos\Listener\ConfigReloadListener;
 use Hyperf\Nacos\Listener\MainWorkerStartListener;
 use Hyperf\Nacos\Listener\OnShutdownListener;
@@ -35,7 +33,6 @@ class ConfigProvider
                 FetchConfigProcess::class,
             ],
             'dependencies' => [
-                LoggerInterface::class => StdoutLogger::class,
                 Application::class => ClientFactory::class,
             ],
             'annotations' => [],

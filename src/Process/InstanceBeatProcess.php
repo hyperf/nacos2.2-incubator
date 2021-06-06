@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace Hyperf\Nacos\Process;
 
 use Hyperf\Contract\ConfigInterface;
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Nacos\Api\NacosInstance;
-use Hyperf\Nacos\Contract\LoggerInterface;
 use Hyperf\Nacos\Instance;
 use Hyperf\Nacos\Service;
 use Hyperf\Process\AbstractProcess;
@@ -33,14 +33,14 @@ class InstanceBeatProcess extends AbstractProcess
         $service = $this->container->get(Service::class);
 
         $config = $this->container->get(ConfigInterface::class);
-        $logger = $this->container->get(LoggerInterface::class);
+        $logger = $this->container->get(StdoutLoggerInterface::class);
         while (ProcessManager::isRunning()) {
             sleep($config->get('nacos.client.beat_interval', 5));
             $send = $nacosInstance->beat($service, $instance);
             if ($send) {
-                $logger && $logger->debug('nacos send beat success!', compact('instance'));
+                $logger->debug('nacos send beat success!', compact('instance'));
             } else {
-                $logger && $logger->error('nacos send beat fail!', compact('instance'));
+                $logger->error('nacos send beat fail!', compact('instance'));
             }
         }
     }
