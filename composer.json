@@ -1,5 +1,5 @@
 {
-    "name": "hyperf/nacos",
+    "name": "hyperf/nacos2.2-incubator",
     "description": "A PHP implementation of Nacos OpenAPI, particularly adapt for Hyperf.",
     "license": "MIT",
     "keywords": [
@@ -27,6 +27,20 @@
         "hyperf/load-balancer": "~2.2.0",
         "hyperf/utils": "~2.2.0"
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "hyperf/di": "^2.1",
+        "hyperf/config": "^2.1",
+        "hyperf/event": "^2.1",
+        "hyperf/framework": "^2.1",
+        "hyperf/logger": "^2.1",
+        "hyperf/process": "^2.1",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": ">=7.0",
+        "swoole/ide-helper": "dev-master",
+        "symfony/var-dumper": "^5.1"
+    },
     "suggest": {
         "ext-json": "*",
         "ext-simplexml": "*",
@@ -36,8 +50,16 @@
         "hyperf/framework": "~2.2.0",
         "hyperf/logger": "~2.2.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
+        "optimize-autoloader": true,
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit -c phpunit.xml --colors=always",
+        "analyse": "phpstan analyse --memory-limit 1024M -l 0 ./src",
+        "cs-fix": "php-cs-fixer fix $1"
     },
     "extra": {
         "branch-alias": {
