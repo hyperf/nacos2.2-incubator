@@ -18,6 +18,7 @@ use Hyperf\Nacos\Contract\LoggerInterface;
 use Hyperf\Nacos\Listener\MainWorkerStartListener;
 use Hyperf\Nacos\Listener\OnShutdownListener;
 use Hyperf\Nacos\Process\InstanceBeatProcess;
+use Hyperf\NacosSdk\Application;
 
 class ConfigProvider
 {
@@ -35,6 +36,7 @@ class ConfigProvider
             ],
             'dependencies' => [
                 LoggerInterface::class => StdoutLogger::class,
+                Application::class => ClientFactory::class,
             ],
             'annotations' => [],
             'publish' => [

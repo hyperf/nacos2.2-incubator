@@ -21,6 +21,28 @@ return [
     // The nacos account info
     'username' => null,
     'password' => null,
+    'guzzle' => [
+        'config' => [],
+    ],
+    'config' => [
+        'enable' => true,
+        'merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
+        'reload_interval' => 3,
+        'append_node' => 'nacos_config',
+        'listener_config' => [
+            // dataId, group, tenant, type, content
+            'nacos_config' => [
+                'tenant' => 'tenant', // corresponding with service.namespaceId
+                'data_id' => 'hyperf-service-config',
+                'group' => 'DEFAULT_GROUP',
+            ],
+            'nacos_config.data' => [
+                'data_id' => 'hyperf-service-config-yml',
+                'group' => 'DEFAULT_GROUP',
+                'type' => 'yml',
+            ],
+        ],
+    ],
     'config_merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
     // The service info.
     'service' => [

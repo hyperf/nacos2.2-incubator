@@ -21,10 +21,16 @@
             "Hyperf\\Nacos\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "HyperfTest\\Nacos\\": "tests"
+        }
+    },
     "require": {
         "hyperf/contract": "^2.1",
         "hyperf/guzzle": "^2.1",
         "hyperf/load-balancer": "^2.1",
+        "hyperf/nacos-sdk-incubator": "^0.1.1",
         "hyperf/utils": "^2.1"
     },
     "require-dev": {
