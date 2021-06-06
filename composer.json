@@ -22,10 +22,10 @@
         }
     },
     "require": {
-        "hyperf/contract": "~2.2.0",
-        "hyperf/guzzle": "~2.2.0",
-        "hyperf/load-balancer": "~2.2.0",
-        "hyperf/utils": "~2.2.0"
+        "hyperf/contract": "^2.1",
+        "hyperf/guzzle": "^2.1",
+        "hyperf/load-balancer": "^2.1",
+        "hyperf/utils": "^2.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -50,10 +50,7 @@
         "hyperf/framework": "~2.2.0",
         "hyperf/logger": "~2.2.0"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "config": {
-        "optimize-autoloader": true,
         "sort-packages": true
     },
     "scripts": {
@@ -63,7 +60,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-main": "2.2-dev"
         },
         "hyperf": {
             "config": "Hyperf\\Nacos\\ConfigProvider"
