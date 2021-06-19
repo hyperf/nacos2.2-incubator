@@ -31,28 +31,47 @@ class MainWorkerStartListenerTest extends TestCase
         Mockery::close();
     }
 
-    public function testRegisterServiceAndInstance()
+    public function testUpdateServiceAndInstance()
     {
         $handler = function (RequestInterface $request) {
-            $uri = $request->getUri()->getPath();
             $method = $request->getMethod();
-            var_dump($uri, $method);
             $data = '{}';
-            switch ($uri) {
-                case '/nacos/v1/ns/service':
-                    if ($method === 'PUT') {
-                        $data = 'ok';
-                    }
-                    break;
-                case '/nacos/v1/ns/instance':
-                    if ($method === 'PUT') {
-                        $data = 'ok';
-                    }
-                    break;
+            if ($method === 'PUT') {
+                $data = 'ok';
             }
 
             return new FulfilledPromise(new Psr7\Response(
                 200,
+                [],
+                $data
+            ));
+        };
+        $container = ContainerStub::getContainer($handler);
+
+        $listener = new MainWorkerStartListener($container);
+
+        $listener->process(new MainWorkerStart(new \stdClass(), 1));
+
+        $this->assertTrue(true);
+    }
+
+    public function testRegisterServiceAndInstance()
+    {
+        $handler = function (RequestInterface $request) {
+            $method = $request->getMethod();
+            $status = 404;
+            $data = '{}';
+            if ($method === 'POST') {
+                $data = 'ok';
+                $status = 200;
+            }
+            if ($request->getUri()->getPath() === '/nacos/v1/cs/configs') {
+                $data = '{}';
+                $status = 200;
+            }
+
+            return new FulfilledPromise(new Psr7\Response(
+                $status,
                 [],
                 $data
             ));

@@ -101,6 +101,9 @@ class ContainerStub
             $logger->shouldReceive('critical')->andReturnUsing(function ($message) {
                 var_dump($message);
             });
+            $logger->shouldReceive('error')->andReturnUsing(function ($message) {
+                var_dump($message);
+            });
             return $logger;
         });
 
