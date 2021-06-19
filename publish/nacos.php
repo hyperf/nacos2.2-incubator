@@ -43,13 +43,21 @@ return [
             ],
         ],
     ],
-    'config_merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
     // The service info.
     'service' => [
         'service_name' => 'hyperf',
         'group_name' => 'api',
         'namespace_id' => 'namespace_id',
         'protect_threshold' => 0.5,
+        'metadata' => null,
+        'selector' => null,
+        'instance' => [
+            'ip' => Hyperf\Nacos\Service\IPReader::class,
+            'cluster' => null,
+            'weight' => null,
+            'metadata' => null,
+            'ephemeral' => null,
+        ],
     ],
     // The client info.
     'client' => [
