@@ -30,10 +30,10 @@ class InstanceBeatProcess extends AbstractProcess
         $config = $this->container->get(ConfigInterface::class);
         $logger = $this->container->get(StdoutLoggerInterface::class);
         $client = $this->container->get(Application::class);
+
         $serviceConfig = $config->get('nacos.service', []);
         $serviceName = $serviceConfig['service_name'];
         $groupName = $serviceConfig['group_name'] ?? null;
-        // Register Instance to Nacos.
         $instanceConfig = $serviceConfig['instance'] ?? [];
         $ephemeral = $instanceConfig['ephemeral'] ?? null;
         $cluster = $instanceConfig['cluster'] ?? null;

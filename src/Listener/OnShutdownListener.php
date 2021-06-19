@@ -15,8 +15,8 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\OnShutdown;
-use Hyperf\Nacos\Api\NacosInstance;
-use Hyperf\Nacos\Instance;
+use Hyperf\Nacos\Service\IPReaderInterface;
+use Hyperf\NacosSdk\Application;
 use Hyperf\Server\Event\CoroutineServerStop;
 use Psr\Container\ContainerInterface;
 
@@ -62,17 +62,36 @@ class OnShutdownListener implements ListenerInterface
         if (! $config->get('nacos.service.enable', true)) {
             return;
         }
-        if (! $config->get('nacos.remove_node_when_server_shutdown', false)) {
+        if (! $config->get('nacos.service.instance.auto_removed', false)) {
             return;
         }
 
-        $instance = $this->container->get(Instance::class);
-        /** @var NacosInstance $nacosInstance */
-        $nacosInstance = make(NacosInstance::class);
-        if ($nacosInstance->delete($instance)) {
-            $this->logger->info('nacos instance delete success.');
-        } else {
-            $this->logger->erro('nacos instance delete fail when shutdown.');
+        $serviceConfig = $config->get('nacos.service', []);
+        $serviceName = $serviceConfig['service_name'];
+        $groupName = $serviceConfig['group_name'] ?? null;
+        $namespaceId = $serviceConfig['namespace_id'] ?? null;
+        $instanceConfig = $serviceConfig['instance'] ?? [];
+        $ephemeral = $instanceConfig['ephemeral'] ?? null;
+        $cluster = $instanceConfig['cluster'] ?? null;
+        /** @var IPReaderInterface $ipReader */
+        $ipReader = $this->container->get($instanceConfig['ip']);
+        $ip = $ipReader->read();
+
+        $client = $this->container->get(Application::class);
+        $ports = $config->get('server.servers', []);
+        foreach ($ports as $portServer) {
+            $port = (int) $portServer['port'];
+            $response = $client->instance->delete($serviceName, $groupName, $ip, $port, [
+                'clusterName' => $cluster,
+                'namespaceId' => $namespaceId,
+                'ephemeral' => $ephemeral,
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $this->logger->debug(sprintf('Instance %s:%d deleted successfully!', $ip, $port));
+            } else {
+                $this->logger->error(sprintf('Instance %s:%d deleted failed!', $ip, $port));
+            }
         }
     }
 }
