@@ -44,7 +44,7 @@ class HandlerMockery
         switch ($uri) {
             case '/nacos/v1/cs/configs':
                 $query = $request->getUri()->getQuery();
-                switch ($this->parse($query)['dataId']) {
+                switch (static::parse($query)['dataId']) {
                     case 'json':
                         $data = '{"id": 1}';
                         break;
@@ -67,7 +67,7 @@ class HandlerMockery
         ));
     }
 
-    protected function parse(string $query): array
+    public static function parse(string $query): array
     {
         $data = explode('&', $query);
         $result = [];

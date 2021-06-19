@@ -16,6 +16,8 @@ use Hyperf\Nacos\Listener\MainWorkerStartListener;
 use Hyperf\Nacos\Listener\OnShutdownListener;
 use Hyperf\Nacos\Process\FetchConfigProcess;
 use Hyperf\Nacos\Process\InstanceBeatProcess;
+use Hyperf\Nacos\Service\IPReader;
+use Hyperf\Nacos\Service\IPReaderInterface;
 use Hyperf\NacosSdk\Application;
 
 class ConfigProvider
@@ -34,6 +36,7 @@ class ConfigProvider
             ],
             'dependencies' => [
                 Application::class => ClientFactory::class,
+                IPReaderInterface::class => IPReader::class,
             ],
             'annotations' => [],
             'publish' => [

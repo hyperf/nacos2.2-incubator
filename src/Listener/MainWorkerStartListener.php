@@ -59,12 +59,9 @@ class MainWorkerStartListener implements ListenerInterface
         if (! $config->get('nacos')) {
             return;
         }
-        if (! $config->get('nacos.enable', true)) {
-            return;
-        }
 
         $serviceConfig = $config->get('nacos.service', []);
-        if (! $serviceConfig) {
+        if (! $serviceConfig || empty($serviceConfig['enable'])) {
             return;
         }
 
@@ -87,6 +84,7 @@ class MainWorkerStartListener implements ListenerInterface
                 'metadata' => $metadata,
                 'selector' => $selector,
             ];
+
             switch ($response->getStatusCode()) {
                 case 404:
                     $response = $client->service->create($serviceName, $optional);

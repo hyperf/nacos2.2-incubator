@@ -12,7 +12,6 @@ declare(strict_types=1);
 use Hyperf\Nacos\Constants;
 
 return [
-    'enable' => true,
     // nacos server url like https://nacos.hyperf.io, Priority is higher than host:port
     // 'url' => '',
     // The nacos host info
@@ -45,6 +44,7 @@ return [
     ],
     // The service info.
     'service' => [
+        'enable' => true,
         'service_name' => 'hyperf',
         'group_name' => 'api',
         'namespace_id' => 'namespace_id',
@@ -52,7 +52,7 @@ return [
         'metadata' => null,
         'selector' => null,
         'instance' => [
-            'ip' => Hyperf\Nacos\Service\IPReader::class,
+            'ip' => Hyperf\Nacos\Service\IPReaderInterface::class,
             'cluster' => null,
             'weight' => null,
             'metadata' => null,
