@@ -22,6 +22,7 @@ use Hyperf\Nacos\Instance;
 use Hyperf\Nacos\Service\IPReaderInterface;
 use Hyperf\NacosSdk\Application;
 use Hyperf\Server\Event\MainCoroutineServerStart;
+use Hyperf\Utils\Coordinator\Constants;
 use Hyperf\Utils\Coordinator\CoordinatorManager;
 use Hyperf\Utils\Coroutine;
 use Psr\Container\ContainerInterface;
@@ -163,7 +164,7 @@ class MainWorkerStartListener implements ListenerInterface
                     retry(INF, function () use ($interval) {
                         $prevConfig = [];
                         while (true) {
-                            $coordinator = CoordinatorManager::until(\Hyperf\Utils\Coordinator\Constants::WORKER_EXIT);
+                            $coordinator = CoordinatorManager::until(Constants::WORKER_EXIT);
                             $workerExited = $coordinator->yield($interval);
                             if ($workerExited) {
                                 break;

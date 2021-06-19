@@ -55,7 +55,7 @@ class ContainerStub
                 'config' => [
                     'enable' => true,
                     'merge_mode' => Constants::CONFIG_MERGE_OVERWRITE,
-                    'reload_interval' => 3,
+                    'reload_interval' => 1,
                     'default_key' => 'nacos_default_config',
                     'listener_config' => [
                         'nacos_config' => [
