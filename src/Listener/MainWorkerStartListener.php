@@ -18,7 +18,6 @@ use Hyperf\Framework\Event\MainWorkerStart;
 use Hyperf\Nacos\Client;
 use Hyperf\Nacos\Config\ConfigManager;
 use Hyperf\Nacos\Exception\RequestException;
-use Hyperf\Nacos\Instance;
 use Hyperf\Nacos\Service\IPReaderInterface;
 use Hyperf\NacosSdk\Application;
 use Hyperf\Server\Event\MainCoroutineServerStart;

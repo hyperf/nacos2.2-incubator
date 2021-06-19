@@ -32,26 +32,6 @@ return [
 ];
 ```
 
-### 获取当前实例
-
-```php
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Nacos\Instance;
-
-$container = ApplicationContext::getContainer();
-$instance = $container->get(Instance::class);
-```
-
-### 获取当前服务
-
-```php
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Nacos\Service;
-
-$container = ApplicationContext::getContainer();
-$service = $container->get(Service::class);
-```
-
 ### 获取一个服务的最优节点
 
 ```php
