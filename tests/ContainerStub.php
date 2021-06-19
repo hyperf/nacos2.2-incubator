@@ -13,6 +13,7 @@ namespace HyperfTest\Nacos;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
+use Hyperf\Nacos\Config\ConfigManager;
 use Hyperf\Nacos\Constants;
 use Hyperf\NacosSdk\Application;
 use Hyperf\NacosSdk\Config;
@@ -73,6 +74,10 @@ class ContainerStub
             $logger = \Mockery::mock(StdoutLoggerInterface::class);
             $logger->shouldReceive('warning')->andReturnFalse();
             return $logger;
+        });
+
+        $container->shouldReceive('get')->with(ConfigManager::class)->andReturnUsing(function () use ($container) {
+            return new ConfigManager($container->get(ConfigInterface::class));
         });
 
         return $container;
