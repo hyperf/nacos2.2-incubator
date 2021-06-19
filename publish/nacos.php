@@ -57,6 +57,7 @@ return [
             'weight' => null,
             'metadata' => null,
             'ephemeral' => null,
+            'heartbeat' => 5,
         ],
     ],
     // The client info.
