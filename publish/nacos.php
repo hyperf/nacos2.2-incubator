@@ -61,6 +61,4 @@ return [
             'auto_removed' => false,
         ],
     ],
-    'remove_node_when_server_shutdown' => true,
-    'load_balancer' => 'random',
 ];
