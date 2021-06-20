@@ -87,4 +87,26 @@ class Client
                 return $body;
         }
     }
+
+    /**
+     * @param $optional = [
+     *     'groupName' => '',
+     *     'namespaceId' => '',
+     *     'clusters' => '', // 集群名称(字符串，多个集群用逗号分隔)
+     *     'healthyOnly' => false,
+     * ]
+     */
+    public function getValidNodes(string $serviceName, array $optional = []): array
+    {
+        $response = $this->client->instance->list($serviceName, $optional);
+        if ($response->getStatusCode() !== 200) {
+            throw new RequestException((string) $response->getBody(), $response->getStatusCode());
+        }
+
+        $data = Json::decode((string) $response->getBody());
+        $hosts = $data['hosts'] ?? [];
+        return array_filter($hosts, function ($item) {
+            return $item['valid'] ?? false;
+        });
+    }
 }

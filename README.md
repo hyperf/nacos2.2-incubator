@@ -20,9 +20,11 @@ php bin/hyperf.php vendor:publish hyperf/nacos
 
 如果需要在服务下线时自动注销服务，请增加如下配置，以监听 `Shutdown` 事件
 
-```php
-// config/autoload/server.php
+- config/autoload/server.php
 
+```php
+<?php
+use Hyperf\Server\Event;
 return [
     // ...other
     'callbacks' => [
@@ -32,23 +34,19 @@ return [
 ];
 ```
 
-### 获取一个服务的最优节点
+### 获取服务的可用节点列表
 
 ```php
 use Hyperf\Utils\ApplicationContext;
-use Hyperf\Nacos\Api\NacosInstance;
-use Hyperf\Nacos\Model\ServiceModel;
+use Hyperf\Nacos\Client;
 
 $container = ApplicationContext::getContainer();
-$instance = $container->get(NacosInstance::class);
+$client = $container->get(Client::class);
 
-$service = new ServiceModel([
-    'service_name' => 'hyperf',
-    'group_name' => 'api',
-    'namespace_id' => '5ce9d1c1-6732-4ccc-ae1f-5139af86a845'
+$optimal = $client->getValidNodes('hyperf', [
+    'groupName' => 'api',
+    'namespaceId' => '5ce9d1c1-6732-4ccc-ae1f-5139af86a845'
 ]);
-
-$optimal = $instance->getOptimal($service);
 
 ```
 
@@ -95,7 +93,5 @@ return [
 ];
 ```
 
-系统将自动监听`listener_config` 中的配置，并将其合并入`hyperf Config` 对象的指定(`config_append_node`) 节点，可以用`config('nacos_config.***')`
-获取，若没有配置 `config_append_node` 项，将会并入 `Config` 对象根节点。
-
-> 所有配置的 `键(key)` 在实际发起 API 请求时会自动从下划线风格转换为驼峰风格。
+系统将自动监听`listener_config` 中的配置，并将其合并到对应的节点中，例如上述的 `nacos_config`，可以用`config('nacos_config.***')`
+获取，若没有配置 `$key` 项，将会并入 `default_key` 节点。
