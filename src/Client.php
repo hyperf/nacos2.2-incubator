@@ -13,6 +13,7 @@ namespace Hyperf\Nacos;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
+use Hyperf\Nacos\Exception\RequestException;
 use Hyperf\NacosSdk\Application;
 use Hyperf\Utils\Codec\Json;
 use Hyperf\Utils\Codec\Xml;
